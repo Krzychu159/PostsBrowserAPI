@@ -1,0 +1,50 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+h1 {
+  text-align: center;
+}
+.posts {
+  width: 500px;
+  margin: 20px auto;
+}
+.post {
+  padding: 10px;
+  border: solid 1px black;
+  margin-bottom: 10px;
+}
+.title {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.p-body {
+  text-align: justify;
+  margin-bottom: 10px;
+}
+.comment {
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid black;
+}
+.name {
+  font-weight: 600;
+  font-size: 0.8em;
+}
+.c-body {
+  font-size: 0.7em;
+}
+li {
+  list-style: none;
+}
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+button {
+  width: 100%;
+  padding: 8px;
+}
