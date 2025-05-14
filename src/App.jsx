@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const [comments, setComments] = useState([]);
-
   const [showCommentsMap, setShowCommentsMap] = useState({});
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
+        setAllPosts(data);
         const visibilityMap = {};
         data.forEach((post) => {
           visibilityMap[post.id] = false;
@@ -28,11 +30,33 @@ function App() {
       );
   }, []);
 
+  const searchOperation = (search) => {
+    const newPosts = posts.filter((post) =>
+      post.title.toLowerCase().includes(search.toLowerCase())
+    );
+    if (newPosts.length == 0) {
+      alert("Brak wyników!");
+    }
+    setAllPosts(newPosts);
+  };
+
   return (
     <>
       <h1>Posts</h1>
+      <div className="navigation">
+        <input
+          type="text"
+          onChange={(e) => {
+            setSearch(e.target.value);
+            searchOperation(e.target.value);
+          }}
+          value={search}
+          placeholder="Title"
+        />
+        <button>Sort A-Z</button>
+      </div>
       <div className="posts">
-        {posts.slice(1, 6).map((post) => (
+        {allPosts.slice(0, 10).map((post) => (
           <div className="post" key={post.id}>
             <p className="title">{post.title}</p>
             <p className="p-body">{post.body}</p>

@@ -7,6 +7,20 @@
 h1 {
   text-align: center;
 }
+.navigation {
+  display: flex;
+  gap: 10px;
+  width: 500px;
+  margin: 20px auto;
+}
+.navigation button {
+  flex: 1;
+  padding: 10px 15px;
+}
+.navigation input {
+  flex: 2;
+  padding: 10px 15px;
+}
 .posts {
   width: 500px;
   margin: 20px auto;
