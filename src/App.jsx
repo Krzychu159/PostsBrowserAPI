@@ -8,7 +8,7 @@ function App() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
+    fetch("https://json-backend-posts.vercel.app/api/posts")
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
@@ -22,7 +22,7 @@ function App() {
       .catch((error) =>
         console.error("Błąd podczas pobierania danych:", error)
       );
-    fetch("https://jsonplaceholder.typicode.com/comments")
+    fetch("https://json-backend-posts.vercel.app/api/comments")
       .then((response) => response.json())
       .then((data) => setComments(data))
       .catch((error) =>
@@ -38,6 +38,21 @@ function App() {
       alert("Brak wyników!");
     }
     setAllPosts(newPosts);
+  };
+
+  const deleteOperation = (postId) => {
+    fetch(`https://json-backend-posts.vercel.app/api/${postId}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Błąd usuwania");
+        console.log("Usunięto");
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -81,7 +96,14 @@ function App() {
               >
                 {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
               </button>
-              <button>See post</button>
+              <button
+                onClick={() => {
+                  deleteOperation(post.id);
+                }}
+              >
+                Delete Post
+              </button>
+              <button>Edit Post</button>
             </div>
           </div>
         ))}
