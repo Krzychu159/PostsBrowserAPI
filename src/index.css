@@ -3,9 +3,31 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
+  background-color: rgb(130, 193, 252);
 }
-h1 {
-  text-align: center;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 500px;
+  margin: 15px auto 0;
+}
+header button {
+  width: 100px;
+  padding: 7px;
+}
+form {
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+input {
+  padding: 6px;
+}
+#body {
+  padding: 6px;
 }
 .navigation {
   display: flex;

@@ -7,6 +7,10 @@ function App() {
   const [showCommentsMap, setShowCommentsMap] = useState({});
   const [search, setSearch] = useState("");
 
+  const [formShow, setFormShow] = useState(false);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
   useEffect(() => {
     fetch("https://json-backend-posts.vercel.app/api/posts")
       .then((response) => response.json())
@@ -41,7 +45,9 @@ function App() {
   };
 
   const deleteOperation = (postId) => {
-    fetch(`https://json-backend-posts.vercel.app/api/${postId}`, {
+    if (!window.confirm("Definitely remove the post?")) return;
+
+    fetch(`https://json-backend-posts.vercel.app/api/posts/${postId}`, {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -49,15 +55,72 @@ function App() {
       },
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Błąd usuwania");
-        console.log("Usunięto");
+        if (!res.ok) throw new Error("Error delete");
+        console.log("deleted");
+
+        setPosts((prev) => prev.filter((post) => post.id !== postId));
+        setAllPosts((prev) => prev.filter((post) => post.id !== postId));
       })
       .catch((err) => console.error(err));
   };
 
+  const addOperation = () => {
+    fetch("https://json-backend-posts.vercel.app/api/posts", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, body }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("added: ", data);
+      })
+      .catch((err) => console.error("Błąd dodawania:", err));
+    console.log("add");
+  };
+
   return (
     <>
-      <h1>Posts</h1>
+      <header>
+        <h1>Posts</h1>
+        <button
+          onClick={() => {
+            setFormShow((prev) => !prev);
+          }}
+          className="addButton"
+        >
+          + Add
+        </button>
+      </header>
+
+      {formShow ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            addOperation();
+          }}
+        >
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label htmlFor="body">Body</label>
+          <textarea
+            type="text"
+            id="body"
+            placeholder="body"
+            rows={3}
+            onChange={(e) => setBody(e.target.value)}
+          />
+          <button>Add!</button>
+        </form>
+      ) : null}
+
       <div className="navigation">
         <input
           type="text"
