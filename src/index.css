@@ -3,7 +3,6 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
-  background-color: rgb(130, 193, 252);
 }
 header {
   display: flex;
@@ -25,6 +24,9 @@ form {
 }
 input {
   padding: 6px;
+}
+.empty {
+  border: solid red 1px;
 }
 #body {
   padding: 6px;

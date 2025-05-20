@@ -10,6 +10,8 @@ function App() {
   const [formShow, setFormShow] = useState(false);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [titleTouched, setTitleTouched] = useState(false);
+  const [bodyTouched, setBodyTouched] = useState(false);
 
   useEffect(() => {
     fetch("https://json-backend-posts.vercel.app/api/posts")
@@ -65,20 +67,26 @@ function App() {
   };
 
   const addOperation = () => {
-    fetch("https://json-backend-posts.vercel.app/api/posts", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, body }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("added: ", data);
+    if (body.trim() === "" || title.trim() === "") {
+      alert("Empty fields!");
+    } else {
+      fetch("https://json-backend-posts.vercel.app/api/posts", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, body }),
       })
-      .catch((err) => console.error("Błąd dodawania:", err));
-    console.log("add");
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("added: ", data);
+          alert("Post added correctly!");
+        })
+        .catch((err) => console.error("Błąd dodawania:", err));
+      setTitle("");
+      setBody("");
+    }
   };
 
   return (
@@ -108,6 +116,11 @@ function App() {
             id="title"
             placeholder="title"
             onChange={(e) => setTitle(e.target.value)}
+            onClick={() => setTitleTouched(true)}
+            value={title}
+            className={
+              titleTouched ? (title.trim() === "" ? "empty" : null) : null
+            }
           />
           <label htmlFor="body">Body</label>
           <textarea
@@ -116,6 +129,7 @@ function App() {
             placeholder="body"
             rows={3}
             onChange={(e) => setBody(e.target.value)}
+            value={body}
           />
           <button>Add!</button>
         </form>
@@ -134,7 +148,7 @@ function App() {
         <button>Sort A-Z</button>
       </div>
       <div className="posts">
-        {allPosts.slice(0, 10).map((post) => (
+        {allPosts.map((post) => (
           <div className="post" key={post.id}>
             <p className="title">{post.title}</p>
             <p className="p-body">{post.body}</p>
