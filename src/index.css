@@ -17,10 +17,18 @@ header button {
 }
 form {
   width: 500px;
-  margin: 0 auto;
+  margin: 15px auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border: 1px solid black;
+  padding: 10px;
+}
+.complete {
+  color: red;
+  font-size: 0.7em;
+  margin: 0;
+  padding: 0;
 }
 input {
   padding: 6px;

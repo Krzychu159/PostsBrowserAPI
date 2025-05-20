@@ -82,6 +82,7 @@ function App() {
         .then((data) => {
           console.log("added: ", data);
           alert("Post added correctly!");
+          setAllPosts((prev) => [...prev, data]);
         })
         .catch((err) => console.error("Błąd dodawania:", err));
       setTitle("");
@@ -111,6 +112,13 @@ function App() {
           }}
         >
           <label htmlFor="title">Title</label>
+          <div className="complete">
+            {titleTouched
+              ? title.trim() === ""
+                ? "Complete title!"
+                : null
+              : null}
+          </div>
           <input
             type="text"
             id="title"
@@ -123,13 +131,24 @@ function App() {
             }
           />
           <label htmlFor="body">Body</label>
+          <div className="complete">
+            {bodyTouched
+              ? body.trim() === ""
+                ? "Complete body!"
+                : null
+              : null}
+          </div>
           <textarea
             type="text"
             id="body"
             placeholder="body"
             rows={3}
             onChange={(e) => setBody(e.target.value)}
+            onClick={() => setBodyTouched(true)}
             value={body}
+            className={
+              bodyTouched ? (body.trim() === "" ? "empty" : null) : null
+            }
           />
           <button>Add!</button>
         </form>
@@ -148,42 +167,46 @@ function App() {
         <button>Sort A-Z</button>
       </div>
       <div className="posts">
-        {allPosts.map((post) => (
-          <div className="post" key={post.id}>
-            <p className="title">{post.title}</p>
-            <p className="p-body">{post.body}</p>
-            {comments
-              .filter((comment) => comment.postId === post.id)
-              .slice(0, showCommentsMap[post.id] ? 5 : 2)
-              .map((comment) => (
-                <li className="comment" key={comment.id}>
-                  <div className="name">{comment.name}</div>
-                  <div className="c-body">{comment.body}</div>
-                </li>
-              ))}
+        {allPosts.length === 0 ? (
+          <p>Brak postów do wyświetlenia.</p>
+        ) : (
+          allPosts.map((post) => (
+            <div className="post" key={post.id}>
+              <p className="title">{post.title}</p>
+              <p className="p-body">{post.body}</p>
+              {comments
+                .filter((comment) => comment.postId === post.id)
+                .slice(0, showCommentsMap[post.id] ? 5 : 2)
+                .map((comment) => (
+                  <li className="comment" key={comment.id}>
+                    <div className="name">{comment.name}</div>
+                    <div className="c-body">{comment.body}</div>
+                  </li>
+                ))}
 
-            <div className="buttons">
-              <button
-                onClick={() =>
-                  setShowCommentsMap((prev) => ({
-                    ...prev,
-                    [post.id]: !prev[post.id],
-                  }))
-                }
-              >
-                {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
-              </button>
-              <button
-                onClick={() => {
-                  deleteOperation(post.id);
-                }}
-              >
-                Delete Post
-              </button>
-              <button>Edit Post</button>
+              <div className="buttons">
+                <button
+                  onClick={() =>
+                    setShowCommentsMap((prev) => ({
+                      ...prev,
+                      [post.id]: !prev[post.id],
+                    }))
+                  }
+                >
+                  {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
+                </button>
+                <button
+                  onClick={() => {
+                    deleteOperation(post.id);
+                  }}
+                >
+                  Delete Post
+                </button>
+                <button>Edit Post</button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </>
   );
