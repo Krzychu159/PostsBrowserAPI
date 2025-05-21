@@ -61,6 +61,8 @@ input {
   padding: 10px;
   border: solid 1px black;
   margin-bottom: 10px;
+  width: 500px;
+  margin: 20px auto;
 }
 .title {
   font-size: 1.4em;
@@ -93,4 +95,11 @@ li {
 button {
   width: 100%;
   padding: 8px;
+}
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+.link-button {
+  width: 100%;
 }

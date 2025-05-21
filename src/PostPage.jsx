@@ -1,0 +1,81 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+function PostPage() {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const [comments, setComments] = useState();
+  const [showCommentsMap, setShowCommentsMap] = useState({});
+
+  useEffect(() => {
+    fetch(`https://json-backend-posts.vercel.app/api/posts/${id}`).then(
+      (response) =>
+        response.json().then((data) => {
+          setPost(data);
+          console.log(data);
+        })
+    );
+    fetch("https://json-backend-posts.vercel.app/api/comments")
+      .then((response) => response.json())
+      .then((data) => setComments(data))
+      .catch((error) =>
+        console.error("Błąd podczas pobierania danych:", error)
+      );
+  }, []);
+
+  const deleteOperation = (postId) => {
+    if (!window.confirm("Definitely remove the post?")) return;
+
+    fetch(`https://json-backend-posts.vercel.app/api/posts/${postId}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Error delete");
+        console.log("deleted");
+        setPost(null);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  if (!post) return <p>Loading post...</p>;
+  return (
+    <div className="post">
+      <div className="title">{post.title}</div>
+      <div className="body">{post.body}</div>
+      {comments
+        .filter((comment) => comment.postId === post.id)
+        .slice(0, showCommentsMap[post.id] ? 5 : 2)
+        .map((comment) => (
+          <li className="comment" key={comment.id}>
+            <div className="name">{comment.name}</div>
+            <div className="c-body">{comment.body}</div>
+          </li>
+        ))}
+      <div className="buttons">
+        <button
+          onClick={() =>
+            setShowCommentsMap((prev) => ({
+              ...prev,
+              [post.id]: !prev[post.id],
+            }))
+          }
+        >
+          {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
+        </button>
+        <button
+          onClick={() => {
+            deleteOperation(post.id);
+          }}
+        >
+          Delete Post
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default PostPage;
