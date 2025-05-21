@@ -5,7 +5,6 @@ function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState();
-  const [showCommentsMap, setShowCommentsMap] = useState({});
 
   useEffect(() => {
     fetch(`https://json-backend-posts.vercel.app/api/posts/${id}`).then(
@@ -48,7 +47,7 @@ function PostPage() {
       <div className="body">{post.body}</div>
       {comments
         .filter((comment) => comment.postId === post.id)
-        .slice(0, showCommentsMap[post.id] ? 5 : 2)
+
         .map((comment) => (
           <li className="comment" key={comment.id}>
             <div className="name">{comment.name}</div>
@@ -57,22 +56,13 @@ function PostPage() {
         ))}
       <div className="buttons">
         <button
-          onClick={() =>
-            setShowCommentsMap((prev) => ({
-              ...prev,
-              [post.id]: !prev[post.id],
-            }))
-          }
-        >
-          {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
-        </button>
-        <button
           onClick={() => {
             deleteOperation(post.id);
           }}
         >
           Delete Post
         </button>
+        <button>Edit Post</button>
       </div>
     </div>
   );
