@@ -9,6 +9,7 @@ function HomePage() {
   const [search, setSearch] = useState("");
 
   const [formShow, setFormShow] = useState(false);
+
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [titleTouched, setTitleTouched] = useState(false);
@@ -45,26 +46,6 @@ function HomePage() {
     setAllPosts(newPosts);
   };
 
-  const deleteOperation = (postId) => {
-    if (!window.confirm("Definitely remove the post?")) return;
-
-    fetch(`https://json-backend-posts.vercel.app/api/posts/${postId}`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Error delete");
-        console.log("deleted");
-
-        setPosts((prev) => prev.filter((post) => post.id !== postId));
-        setAllPosts((prev) => prev.filter((post) => post.id !== postId));
-      })
-      .catch((err) => console.error(err));
-  };
-
   const addOperation = () => {
     if (body.trim() === "" || title.trim() === "") {
       alert("Empty fields!");
@@ -86,6 +67,7 @@ function HomePage() {
         .catch((err) => console.error("Błąd dodawania:", err));
       setTitle("");
       setBody("");
+      setFormShow(false);
     }
   };
 
@@ -194,13 +176,7 @@ function HomePage() {
                 >
                   {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
                 </button>
-                <button
-                  onClick={() => {
-                    deleteOperation(post.id);
-                  }}
-                >
-                  Delete Post
-                </button>
+                <button>Add Comment</button>
                 <Link to={`/post/${post.id}`} className="link-button">
                   <button>View Post</button>
                 </Link>
