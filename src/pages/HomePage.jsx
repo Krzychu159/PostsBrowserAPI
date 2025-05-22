@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PostForm from "../components/PostForm";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -86,53 +87,18 @@ function HomePage() {
       </header>
 
       {formShow ? (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            addOperation();
-          }}
-        >
-          <label htmlFor="title">Title</label>
-          <div className="complete">
-            {titleTouched
-              ? title.trim() === ""
-                ? "Complete title!"
-                : null
-              : null}
-          </div>
-          <input
-            type="text"
-            id="title"
-            placeholder="title"
-            onChange={(e) => setTitle(e.target.value)}
-            onClick={() => setTitleTouched(true)}
-            value={title}
-            className={
-              titleTouched ? (title.trim() === "" ? "empty" : null) : null
-            }
-          />
-          <label htmlFor="body">Body</label>
-          <div className="complete">
-            {bodyTouched
-              ? body.trim() === ""
-                ? "Complete body!"
-                : null
-              : null}
-          </div>
-          <textarea
-            type="text"
-            id="body"
-            placeholder="body"
-            rows={3}
-            onChange={(e) => setBody(e.target.value)}
-            onClick={() => setBodyTouched(true)}
-            value={body}
-            className={
-              bodyTouched ? (body.trim() === "" ? "empty" : null) : null
-            }
-          />
-          <button>Add!</button>
-        </form>
+        <PostForm
+          title={title}
+          body={body}
+          setTitle={setTitle}
+          setBody={setBody}
+          titleTouched={titleTouched}
+          setTitleTouched={setTitleTouched}
+          bodyTouched={bodyTouched}
+          setBodyTouched={setBodyTouched}
+          addOperation={addOperation}
+          setFormShow={setFormShow}
+        />
       ) : null}
 
       <div className="navigation">

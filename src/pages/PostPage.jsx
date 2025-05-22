@@ -20,7 +20,7 @@ function PostPage() {
       .catch((error) =>
         console.error("Błąd podczas pobierania danych:", error)
       );
-  }, []);
+  }, [id]);
 
   const deleteOperation = (postId) => {
     if (!window.confirm("Definitely remove the post?")) return;
