@@ -1,28 +1,40 @@
-import CommentList from "./CommentList";
-import Buttons from "./Buttons";
 import { Link } from "react-router-dom";
 
-const PostItem = ({ post, comments, onDelete, onToggleComments }) => {
+const PostItem = ({
+  post,
+  comments,
+  onDelete,
+  onToggleComments,
+  showCommentsMap,
+}) => {
+  if (!post) return null;
+
   return (
     <div className="post">
       <p className="title">{post.title}</p>
       <p className="p-body">{post.body}</p>
 
-      <CommentList
-        postId={post.id}
-        comments={comments}
-        showAll={post.showComments}
-      />
+      {comments &&
+        comments
+          .filter((comment) => comment.postId === post.id)
+          .slice(0, showCommentsMap?.[post.id] ? 5 : 2)
 
-      <Buttons
-        post={post}
-        onDelete={onDelete}
-        onToggleComments={onToggleComments}
-      />
+          .map((comment) => (
+            <li className="comment" key={comment.id}>
+              <div className="name">{comment.name}</div>
+              <div className="c-body">{comment.body}</div>
+            </li>
+          ))}
 
-      <Link to={`/post/${post.id}`}>
-        <button>View Post</button>
-      </Link>
+      <div className="buttons">
+        <button onClick={() => onToggleComments(post.id)}>
+          Toggle Comments
+        </button>
+        <button onClick={() => onDelete(post.id)}>Delete</button>
+        <Link to={`/post/${post.id}`} className="link-button">
+          <button>View Post</button>
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PostForm from "../components/PostForm";
+import PostList from "../components/PostList";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
-  const [allPosts, setAllPosts] = useState([]);
+
   const [comments, setComments] = useState([]);
   const [showCommentsMap, setShowCommentsMap] = useState({});
   const [search, setSearch] = useState("");
@@ -21,12 +22,12 @@ function HomePage() {
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
-        setAllPosts(data);
+
         const visibilityMap = {};
         data.forEach((post) => {
           visibilityMap[post.id] = false;
-          setShowCommentsMap(visibilityMap);
         });
+        setShowCommentsMap(visibilityMap);
       })
       .catch((error) =>
         console.error("Błąd podczas pobierania danych:", error)
@@ -39,12 +40,27 @@ function HomePage() {
       );
   }, []);
 
-  const searchOperation = (search) => {
-    const newPosts = posts.filter((post) =>
+  const getFilteredPosts = () => {
+    return posts.filter((post) =>
       post.title.toLowerCase().includes(search.toLowerCase())
     );
+  };
 
-    setAllPosts(newPosts);
+  const toggleComments = (id) => {
+    setShowCommentsMap((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const deletePost = (id) => {
+    if (!window.confirm("Definitely remove the post?")) return;
+
+    fetch(`https://json-backend-posts.vercel.app/api/posts/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setPosts((prev) => prev.filter((post) => post.id !== id));
+    });
   };
 
   const addOperation = () => {
@@ -63,7 +79,7 @@ function HomePage() {
         .then((data) => {
           console.log("added: ", data);
           alert("Post added correctly!");
-          setAllPosts((prev) => [...prev, data]);
+          setPosts((prev) => [...prev, data]);
         })
         .catch((err) => console.error("Błąd dodawania:", err));
       setTitle("");
@@ -106,51 +122,19 @@ function HomePage() {
           type="text"
           onChange={(e) => {
             setSearch(e.target.value);
-            searchOperation(e.target.value);
           }}
           value={search}
           placeholder="Title"
         />
         <button>Sort A-Z</button>
       </div>
-      <div className="posts">
-        {allPosts.length === 0 ? (
-          <p>Brak postów do wyświetlenia.</p>
-        ) : (
-          allPosts.map((post) => (
-            <div className="post" key={post.id}>
-              <p className="title">{post.title}</p>
-              <p className="p-body">{post.body}</p>
-              {comments
-                .filter((comment) => comment.postId === post.id)
-                .slice(0, showCommentsMap[post.id] ? 5 : 2)
-                .map((comment) => (
-                  <li className="comment" key={comment.id}>
-                    <div className="name">{comment.name}</div>
-                    <div className="c-body">{comment.body}</div>
-                  </li>
-                ))}
-
-              <div className="buttons">
-                <button
-                  onClick={() =>
-                    setShowCommentsMap((prev) => ({
-                      ...prev,
-                      [post.id]: !prev[post.id],
-                    }))
-                  }
-                >
-                  {showCommentsMap[post.id] ? "Hide comments" : "Show comments"}
-                </button>
-                <button>Add Comment</button>
-                <Link to={`/post/${post.id}`} className="link-button">
-                  <button>View Post</button>
-                </Link>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+      <PostList
+        posts={getFilteredPosts()}
+        comments={comments}
+        onDelete={deletePost}
+        onToggleComments={toggleComments}
+        showCommentsMap={showCommentsMap}
+      />
     </>
   );
 }

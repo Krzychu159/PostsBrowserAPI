@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function PostPage() {
   const { id } = useParams();
@@ -43,17 +44,21 @@ function PostPage() {
   if (!post) return <p>Loading post...</p>;
   return (
     <div className="post">
+      <Link to="/">
+        <button className="back-button">← Back to Home</button>
+      </Link>
       <div className="title">{post.title}</div>
       <div className="body">{post.body}</div>
-      {comments
-        .filter((comment) => comment.postId === post.id)
+      {comments &&
+        comments
+          .filter((comment) => comment.postId === post.id)
 
-        .map((comment) => (
-          <li className="comment" key={comment.id}>
-            <div className="name">{comment.name}</div>
-            <div className="c-body">{comment.body}</div>
-          </li>
-        ))}
+          .map((comment) => (
+            <li className="comment" key={comment.id}>
+              <div className="name">{comment.name}</div>
+              <div className="c-body">{comment.body}</div>
+            </li>
+          ))}
       <div className="buttons">
         <button
           onClick={() => {
