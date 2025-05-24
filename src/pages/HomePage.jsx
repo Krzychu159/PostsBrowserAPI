@@ -17,6 +17,8 @@ function HomePage() {
   const [titleTouched, setTitleTouched] = useState(false);
   const [bodyTouched, setBodyTouched] = useState(false);
 
+  const [isSortedAZ, setIsSortedAZ] = useState(true);
+
   useEffect(() => {
     fetch("https://json-backend-posts.vercel.app/api/posts")
       .then((response) => response.json())
@@ -41,9 +43,17 @@ function HomePage() {
   }, []);
 
   const getFilteredPosts = () => {
-    return posts.filter((post) =>
+    const filtered = posts.filter((post) =>
       post.title.toLowerCase().includes(search.toLowerCase())
     );
+
+    const sorted = [...filtered].sort((a, b) =>
+      isSortedAZ
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title)
+    );
+
+    return sorted;
   };
 
   const toggleComments = (id) => {
@@ -80,6 +90,7 @@ function HomePage() {
           console.log("added: ", data);
           alert("Post added correctly!");
           setPosts((prev) => [...prev, data]);
+          setSearch("");
         })
         .catch((err) => console.error("Błąd dodawania:", err));
       setTitle("");
@@ -87,6 +98,10 @@ function HomePage() {
       setFormShow(false);
     }
   };
+
+  useEffect(() => {
+    console.log("posts zmieniły się:", posts);
+  }, [posts]);
 
   return (
     <>
@@ -114,6 +129,7 @@ function HomePage() {
           setBodyTouched={setBodyTouched}
           addOperation={addOperation}
           setFormShow={setFormShow}
+          setPosts={setPosts}
         />
       ) : null}
 
@@ -126,7 +142,9 @@ function HomePage() {
           value={search}
           placeholder="Title"
         />
-        <button>Sort A-Z</button>
+        <button onClick={() => setIsSortedAZ((prev) => !prev)}>
+          Sort {isSortedAZ ? "Z-A" : "A-Z"}
+        </button>
       </div>
       <PostList
         posts={getFilteredPosts()}

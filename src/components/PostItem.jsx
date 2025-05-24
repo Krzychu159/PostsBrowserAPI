@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import CommentList from "./CommentList";
 
 const PostItem = ({
   post,
@@ -14,17 +15,11 @@ const PostItem = ({
       <p className="title">{post.title}</p>
       <p className="p-body">{post.body}</p>
 
-      {comments &&
-        comments
-          .filter((comment) => comment.postId === post.id)
-          .slice(0, showCommentsMap?.[post.id] ? 5 : 2)
-
-          .map((comment) => (
-            <li className="comment" key={comment.id}>
-              <div className="name">{comment.name}</div>
-              <div className="c-body">{comment.body}</div>
-            </li>
-          ))}
+      <CommentList
+        comments={comments}
+        post={post}
+        showCommentsMap={showCommentsMap}
+      />
 
       <div className="buttons">
         <button onClick={() => onToggleComments(post.id)}>

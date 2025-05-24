@@ -12,7 +12,6 @@ function PostPage() {
       (response) =>
         response.json().then((data) => {
           setPost(data);
-          console.log(data);
         })
     );
     fetch("https://json-backend-posts.vercel.app/api/comments")

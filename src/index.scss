@@ -63,6 +63,8 @@ input {
   margin-bottom: 10px;
   width: 500px;
   margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
 }
 .title {
   font-size: 1.4em;
@@ -73,10 +75,41 @@ input {
   text-align: justify;
   margin-bottom: 10px;
 }
+.add-comment .c-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 0;
+
+  input,
+  button {
+    max-height: 25px;
+    padding: 5px;
+    font-size: 0.9em;
+  }
+}
 .comment {
   padding: 5px;
   margin-bottom: 5px;
   border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+}
+.comment-header {
+  display: flex;
+  align-items: center;
+}
+
+.email {
+  font-size: 0.6em;
+  color: gray;
+}
+.email::before {
+  content: " \A0 - \A0";
+}
+.add-comment input {
+  padding: 0;
+  width: 100%;
 }
 .name {
   font-weight: 600;
@@ -95,6 +128,7 @@ li {
 button {
   width: 100%;
   padding: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .buttons {
   display: flex;

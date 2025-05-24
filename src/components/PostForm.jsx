@@ -8,7 +8,7 @@ const PostForm = ({
   bodyTouched,
   setTitleTouched,
   setBodyTouched,
-  setAllPosts,
+  setPosts,
   setFormShow,
 }) => {
   const addOperation = () => {
@@ -27,7 +27,7 @@ const PostForm = ({
         .then((data) => {
           console.log("added: ", data);
           alert("Post added correctly!");
-          setAllPosts((prev) => [...prev, data]);
+          setPosts((prev) => [...prev, data]);
         })
         .catch((err) => console.error("Błąd dodawania:", err));
       setTitle("");
