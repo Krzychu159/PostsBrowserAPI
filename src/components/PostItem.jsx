@@ -7,6 +7,10 @@ const PostItem = ({
   onDelete,
   onToggleComments,
   showCommentsMap,
+  onAddComment,
+  setCommentBody,
+  setCommentEmail,
+  setCommentName,
 }) => {
   if (!post) return null;
 
@@ -19,6 +23,10 @@ const PostItem = ({
         comments={comments}
         post={post}
         showCommentsMap={showCommentsMap}
+        onAddComment={onAddComment}
+        setCommentBody={setCommentBody}
+        setCommentEmail={setCommentEmail}
+        setCommentName={setCommentName}
       />
 
       <div className="buttons">

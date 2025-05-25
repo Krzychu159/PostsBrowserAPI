@@ -1,7 +1,14 @@
-import { useState } from "react";
+import CommentAdd from "./CommentAdd";
 
-const CommentList = ({ comments, post, showCommentsMap }) => {
-  const [showForm, setShowForm] = useState(false);
+const CommentList = ({
+  comments,
+  post,
+  showCommentsMap,
+  onAddComment,
+  setCommentBody,
+  setCommentEmail,
+  setCommentName,
+}) => {
   return (
     <ul>
       {comments &&
@@ -17,31 +24,14 @@ const CommentList = ({ comments, post, showCommentsMap }) => {
               <div className="c-body">{comment.body}</div>
             </li>
           ))}
-      <li
-        className="comment add-comment"
-        onClick={() => {
-          setShowForm(true);
-        }}
-      >
-        {!showForm ? (
-          <>
-            <div className="name">Add comment here!</div>
-            <div className="c-body ">
-              <input type="text" placeholder="Your comment..." />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="name">Add comment here!</div>
-            <div className="c-body ">
-              <input type="text" placeholder="Your comment..." />
-              <input type="text" placeholder="Your email..." />
-              <input type="text" placeholder="Your name..." />
-              <button>Add!</button>
-            </div>
-          </>
-        )}
-      </li>
+
+      <CommentAdd
+        onAddComment={onAddComment}
+        setCommentBody={setCommentBody}
+        setCommentEmail={setCommentEmail}
+        setCommentName={setCommentName}
+        postId={post.id}
+      />
     </ul>
   );
 };

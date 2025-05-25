@@ -19,6 +19,10 @@ function HomePage() {
 
   const [isSortedAZ, setIsSortedAZ] = useState(true);
 
+  const [CommentName, setCommentName] = useState("");
+  const [CommentEmail, setCommentEmail] = useState("");
+  const [CommentBody, setCommentBody] = useState("");
+
   useEffect(() => {
     fetch("https://json-backend-posts.vercel.app/api/posts")
       .then((response) => response.json())
@@ -99,6 +103,40 @@ function HomePage() {
     }
   };
 
+  const addComment = (PostId) => {
+    if (
+      CommentName.trim() === "" ||
+      CommentEmail.trim() === "" ||
+      CommentBody.trim() === ""
+    ) {
+      alert("Empty fields!");
+    } else {
+      fetch("https://json-backend-posts.vercel.app/api/comments", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: CommentName,
+          body: CommentBody,
+          email: CommentEmail,
+          PostId: PostId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("added comment: ", data);
+          alert("Comment added correctly!");
+          setComments((prev) => [...prev, data]);
+        })
+        .catch((err) => console.error("Błąd dodawania:", err));
+      setCommentName("");
+      setCommentEmail("");
+      setCommentBody("");
+    }
+  };
+
   useEffect(() => {
     console.log("posts zmieniły się:", posts);
   }, [posts]);
@@ -152,6 +190,10 @@ function HomePage() {
         onDelete={deletePost}
         onToggleComments={toggleComments}
         showCommentsMap={showCommentsMap}
+        onAddComment={addComment}
+        setCommentBody={setCommentBody}
+        setCommentEmail={setCommentEmail}
+        setCommentName={setCommentName}
       />
     </>
   );

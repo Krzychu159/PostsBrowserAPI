@@ -6,13 +6,15 @@ const PostList = ({
   onDelete,
   onToggleComments,
   showCommentsMap,
+  onAddComment,
+  setCommentBody,
+  setCommentEmail,
+  setCommentName,
 }) => {
-  if (posts.length === 0) return <p>Brak postów do wyświetlenia.</p>;
-
   return (
     <div className="posts">
       {posts.length === 0 ? (
-        <p>Brak postów do wyświetlenia.</p>
+        <p className="no-posts">No posts</p>
       ) : (
         posts.map((post) => (
           <PostItem
@@ -22,6 +24,10 @@ const PostList = ({
             onDelete={onDelete}
             onToggleComments={onToggleComments}
             showCommentsMap={showCommentsMap}
+            onAddComment={onAddComment}
+            setCommentBody={setCommentBody}
+            setCommentEmail={setCommentEmail}
+            setCommentName={setCommentName}
           />
         ))
       )}
