@@ -14,6 +14,7 @@ const PostItem = ({
   commentBody,
   commentEmail,
   commentName,
+  viewPost,
 }) => {
   if (!post) return null;
 
@@ -37,12 +38,16 @@ const PostItem = ({
 
       <div className="buttons">
         <button onClick={() => onToggleComments(post.id)}>
-          Toggle Comments
+          Toggle comments
         </button>
-        <button onClick={() => onDelete(post.id)}>Delete</button>
-        <Link to={`/post/${post.id}`} className="link-button">
-          <button>View Post</button>
-        </Link>
+        <button onClick={() => onDelete(post.id)}>Delete post</button>
+        {viewPost ? (
+          <Link to={`/post/${post.id}`} className="link-button">
+            <button>View Post</button>
+          </Link>
+        ) : (
+          <button>Edit post</button>
+        )}
       </div>
     </div>
   );

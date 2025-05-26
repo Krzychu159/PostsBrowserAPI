@@ -14,6 +14,7 @@ const PostList = ({
   commentEmail,
   commentName,
 }) => {
+  const viewPost = true;
   return (
     <div className="posts">
       {posts.length === 0 ? (
@@ -34,6 +35,7 @@ const PostList = ({
             commentBody={commentBody}
             commentEmail={commentEmail}
             commentName={commentName}
+            viewPost={viewPost}
           />
         ))
       )}
