@@ -152,3 +152,9 @@ button {
   width: 500px;
   margin: 0 auto;
 }
+.likes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

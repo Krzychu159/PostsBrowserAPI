@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import CommentList from "./CommentList";
+import like from "../assets/like.png";
 
 const PostItem = ({
   post,
@@ -37,16 +38,20 @@ const PostItem = ({
       />
 
       <div className="buttons">
+        <div className="likes">
+          <img src={like} alt="like" />
+          <p>{post.likes}</p>
+        </div>{" "}
         <button onClick={() => onToggleComments(post.id)}>
           Toggle comments
         </button>
-        <button onClick={() => onDelete(post.id)}>Delete post</button>
+        <button onClick={() => onDelete(post.id)}>Delete </button>
         {viewPost ? (
           <Link to={`/post/${post.id}`} className="link-button">
             <button>View Post</button>
           </Link>
         ) : (
-          <button>Edit post</button>
+          <button>Edit </button>
         )}
       </div>
     </div>
