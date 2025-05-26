@@ -8,6 +8,9 @@ const CommentList = ({
   setCommentBody,
   setCommentEmail,
   setCommentName,
+  commentBody,
+  commentEmail,
+  commentName,
 }) => {
   return (
     <ul>
@@ -31,6 +34,9 @@ const CommentList = ({
         setCommentEmail={setCommentEmail}
         setCommentName={setCommentName}
         postId={post.id}
+        commentBody={commentBody}
+        commentEmail={commentEmail}
+        commentName={commentName}
       />
     </ul>
   );

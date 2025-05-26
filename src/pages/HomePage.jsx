@@ -121,7 +121,7 @@ function HomePage() {
           name: CommentName,
           body: CommentBody,
           email: CommentEmail,
-          PostId: PostId,
+          postId: PostId,
         }),
       })
         .then((res) => res.json())
@@ -194,6 +194,9 @@ function HomePage() {
         setCommentBody={setCommentBody}
         setCommentEmail={setCommentEmail}
         setCommentName={setCommentName}
+        commentBody={CommentBody}
+        commentEmail={CommentEmail}
+        commentName={CommentName}
       />
     </>
   );

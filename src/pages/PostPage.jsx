@@ -1,74 +1,104 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import PostItem from "../components/PostItem";
 
 function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
+
+  const [commentBody, setCommentBody] = useState("");
+  const [commentEmail, setCommentEmail] = useState("");
+  const [commentName, setCommentName] = useState("");
+  const [showCommentsMap, setShowCommentsMap] = useState({});
 
   useEffect(() => {
-    fetch(`https://json-backend-posts.vercel.app/api/posts/${id}`).then(
-      (response) =>
-        response.json().then((data) => {
-          setPost(data);
-        })
-    );
+    fetch(`https://json-backend-posts.vercel.app/api/posts/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPost(data);
+        setShowCommentsMap({ [data.id]: true }); // domyślnie pokazuj
+      });
+
     fetch("https://json-backend-posts.vercel.app/api/comments")
-      .then((response) => response.json())
-      .then((data) => setComments(data))
-      .catch((error) =>
-        console.error("Błąd podczas pobierania danych:", error)
-      );
+      .then((res) => res.json())
+      .then((data) => setComments(data));
   }, [id]);
 
-  const deleteOperation = (postId) => {
+  const deletePost = (postId) => {
     if (!window.confirm("Definitely remove the post?")) return;
 
     fetch(`https://json-backend-posts.vercel.app/api/posts/${postId}`, {
       method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Error delete");
-        console.log("deleted");
         setPost(null);
       })
       .catch((err) => console.error(err));
   };
 
+  const toggleComments = (postId) => {
+    setShowCommentsMap((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
+  const addComment = (postId) => {
+    if (
+      commentName.trim() === "" ||
+      commentEmail.trim() === "" ||
+      commentBody.trim() === ""
+    ) {
+      alert("Empty fields!");
+      return;
+    }
+
+    fetch("https://json-backend-posts.vercel.app/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: commentName,
+        email: commentEmail,
+        body: commentBody,
+        postId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setComments((prev) => [...prev, data]);
+        setCommentBody("");
+        setCommentEmail("");
+        setCommentName("");
+      });
+  };
+
   if (!post) return <p>Loading post...</p>;
+
   return (
-    <div className="post">
+    <>
       <Link to="/">
         <button className="back-button">← Back to Home</button>
       </Link>
-      <div className="title">{post.title}</div>
-      <div className="body">{post.body}</div>
-      {comments &&
-        comments
-          .filter((comment) => comment.postId === post.id)
 
-          .map((comment) => (
-            <li className="comment" key={comment.id}>
-              <div className="name">{comment.name}</div>
-              <div className="c-body">{comment.body}</div>
-            </li>
-          ))}
-      <div className="buttons">
-        <button
-          onClick={() => {
-            deleteOperation(post.id);
-          }}
-        >
-          Delete Post
-        </button>
-        <button>Edit Post</button>
-      </div>
-    </div>
+      <PostItem
+        post={post}
+        comments={comments}
+        onDelete={deletePost}
+        onToggleComments={toggleComments}
+        showCommentsMap={showCommentsMap}
+        onAddComment={addComment}
+        setCommentBody={setCommentBody}
+        setCommentEmail={setCommentEmail}
+        setCommentName={setCommentName}
+        commentBody={commentBody}
+        commentEmail={commentEmail}
+        commentName={commentName}
+      />
+    </>
   );
 }
 

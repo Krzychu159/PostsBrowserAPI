@@ -84,6 +84,7 @@ input {
   input,
   button {
     max-height: 25px;
+    max-width: 94%;
     padding: 5px;
     font-size: 0.9em;
   }
@@ -117,6 +118,15 @@ input {
 }
 .c-body {
   font-size: 0.7em;
+  max-width: 100%;
+}
+.add-comment-form {
+  width: 90%;
+  margin: 10px auto;
+  input,
+  button {
+    margin: 2px 3%;
+  }
 }
 li {
   list-style: none;

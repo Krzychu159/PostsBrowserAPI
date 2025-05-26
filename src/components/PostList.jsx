@@ -10,6 +10,9 @@ const PostList = ({
   setCommentBody,
   setCommentEmail,
   setCommentName,
+  commentBody,
+  commentEmail,
+  commentName,
 }) => {
   return (
     <div className="posts">
@@ -28,6 +31,9 @@ const PostList = ({
             setCommentBody={setCommentBody}
             setCommentEmail={setCommentEmail}
             setCommentName={setCommentName}
+            commentBody={commentBody}
+            commentEmail={commentEmail}
+            commentName={commentName}
           />
         ))
       )}

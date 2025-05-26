@@ -11,6 +11,9 @@ const PostItem = ({
   setCommentBody,
   setCommentEmail,
   setCommentName,
+  commentBody,
+  commentEmail,
+  commentName,
 }) => {
   if (!post) return null;
 
@@ -27,6 +30,9 @@ const PostItem = ({
         setCommentBody={setCommentBody}
         setCommentEmail={setCommentEmail}
         setCommentName={setCommentName}
+        commentBody={commentBody}
+        commentEmail={commentEmail}
+        commentName={commentName}
       />
 
       <div className="buttons">
