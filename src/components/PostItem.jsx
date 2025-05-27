@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import CommentList from "./CommentList";
 import like from "../assets/like.png";
+import { useState } from "react";
 
 const PostItem = ({
   post,
@@ -17,6 +18,43 @@ const PostItem = ({
   commentName,
   viewPost,
 }) => {
+  const [likes, setLikes] = useState(post.likes);
+  const [isLiking, setIsLiking] = useState(false);
+
+  const addLikes = async () => {
+    const newLikes = likes + 1;
+
+    setLikes(newLikes);
+    setIsLiking(true);
+
+    try {
+      const response = await fetch(
+        `https://json-backend-posts.vercel.app/api/posts/${post.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ likes: newLikes }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error updating the number of likes");
+      }
+
+      const updatedPost = await response.json();
+      console.log("Backend checked:", updatedPost);
+    } catch (error) {
+      console.error("You can't like this post now:", error);
+
+      setLikes((prev) => prev - 1);
+      alert("You can't like this post now");
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
   if (!post) return null;
 
   return (
@@ -37,10 +75,11 @@ const PostItem = ({
         commentName={commentName}
       />
 
-      <div className="buttons">
+      <div className="buttons" onClick={() => addLikes()}>
         <div className="likes">
           <img src={like} alt="like" />
-          <p>{post.likes}</p>
+          <p>{likes}</p>
+          {isLiking && <span className="loader">⏳</span>}
         </div>{" "}
         <button onClick={() => onToggleComments(post.id)}>
           Toggle comments

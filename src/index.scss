@@ -144,6 +144,9 @@ button {
   display: flex;
   gap: 8px;
 }
+.buttons a button {
+  height: 100%;
+}
 .link-button {
   width: 100%;
 }
@@ -157,4 +160,5 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
