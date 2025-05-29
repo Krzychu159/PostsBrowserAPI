@@ -15,7 +15,7 @@ header button {
   width: 100px;
   padding: 7px;
 }
-form {
+.postForm form {
   width: 500px;
   margin: 15px auto;
   display: flex;
@@ -74,6 +74,9 @@ input {
 .p-body {
   text-align: justify;
   margin-bottom: 10px;
+  line-break: auto;
+  overflow-wrap: break-word;
+  overflow: hidden;
 }
 .add-comment .c-body {
   display: flex;
@@ -139,6 +142,7 @@ button {
   width: 100%;
   padding: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 .buttons {
   display: flex;
@@ -161,4 +165,34 @@ button {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.add-com-header {
+  display: flex;
+  justify-content: space-between;
+  .x {
+    margin-right: 5px;
+    padding: 2px;
+    cursor: pointer;
+  }
+}
+.edit {
+  display: flex;
+  flex-direction: column;
+
+  input,
+  textarea {
+    width: 100%;
+    margin: 5px 0;
+    padding: 5px;
+  }
+  button {
+    margin-bottom: 10px;
+  }
+}
+.like-icon {
+  fill: gray;
+  transition: fill 0.3s;
+}
+.like-icon.liked {
+  fill: blue;
 }

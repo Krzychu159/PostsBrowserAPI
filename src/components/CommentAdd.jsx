@@ -27,7 +27,18 @@ const CommentAdd = ({
         </>
       ) : (
         <>
-          <div className="name">Add comment here!</div>
+          <div className="add-com-header">
+            <div className="name">Add comment here!</div>{" "}
+            <div
+              className="x"
+              onClick={(e) => {
+                setShowForm(false);
+                e.stopPropagation();
+              }}
+            >
+              x
+            </div>
+          </div>
           <form
             className="c-body add-comment-form"
             onSubmit={(e) => {
@@ -54,7 +65,8 @@ const CommentAdd = ({
               onChange={(e) => setCommentName(e.target.value)}
               value={commentName}
             />
-            <button>Add!</button>
+
+            <button className="add">Add!</button>
           </form>
         </>
       )}

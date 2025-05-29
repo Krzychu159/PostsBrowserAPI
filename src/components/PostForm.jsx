@@ -36,7 +36,7 @@ const PostForm = ({
     }
   };
   return (
-    <>
+    <div className="postForm">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -78,7 +78,7 @@ const PostForm = ({
         />
         <button>Add!</button>
       </form>
-    </>
+    </div>
   );
 };
 
