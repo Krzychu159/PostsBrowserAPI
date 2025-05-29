@@ -8,7 +8,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 500px;
+  max-width: 500px;
   margin: 15px auto 0;
 }
 header button {
@@ -16,7 +16,7 @@ header button {
   padding: 7px;
 }
 .postForm form {
-  width: 500px;
+  max-width: 500px;
   margin: 15px auto;
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@ input {
 .navigation {
   display: flex;
   gap: 10px;
-  width: 500px;
+  max-width: 500px;
   margin: 20px auto;
 }
 .navigation button {
@@ -54,14 +54,14 @@ input {
   padding: 10px 15px;
 }
 .posts {
-  width: 500px;
+  max-width: 500px;
   margin: 20px auto;
 }
 .post {
   padding: 10px;
   border: solid 1px black;
   margin-bottom: 10px;
-  width: 500px;
+  max-width: 500px;
   margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
@@ -156,7 +156,7 @@ button {
 }
 .no-posts {
   text-align: center;
-  width: 500px;
+  max-width: 500px;
   margin: 0 auto;
 }
 .likes {
@@ -189,10 +189,8 @@ button {
     margin-bottom: 10px;
   }
 }
-.like-icon {
-  fill: gray;
-  transition: fill 0.3s;
-}
-.like-icon.liked {
-  fill: blue;
+@media only screen and (max-width: 600px) {
+  * {
+    padding: 5px 3px;
+  }
 }

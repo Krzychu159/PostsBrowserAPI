@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PostItem from "../components/PostItem";
 
 function PostPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -17,7 +19,7 @@ function PostPage() {
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
-        setShowCommentsMap({ [data.id]: true }); // domyślnie pokazuj
+        setShowCommentsMap({ [data.id]: true });
       });
 
     fetch("https://json-backend-posts.vercel.app/api/comments")
@@ -34,6 +36,7 @@ function PostPage() {
       .then((res) => {
         if (!res.ok) throw new Error("Error delete");
         setPost(null);
+        navigate("/");
       })
       .catch((err) => console.error(err));
   };
